@@ -1,1 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef struct node {
+    int data;
+    struct node *next;
+    struct node *prev;
+} Node;
+
+Node* first = NULL;
+
+Node* createnode(int data) {
+    Node* temp = (Node*)malloc(sizeof(Node));
+    temp->data = data;
+    temp->next = NULL;
+    temp->prev = NULL;
+    return temp;
+}
+
+void insertatpos(int data, int pos) {
+    Node* newnode = createnode(data);
+
+    if (pos <= 0) {
+        printf("Invalid position.\n");
+        return;
+    }
+
+    if (pos == 1) {
+        newnode->next = first;
+        if (first != NULL) {
+            first->prev = newnode;
+        }
+        first = newnode;
+        return;
+    }
+
+    Node* temp = first;
+    int index = 1;
+
+    while (temp != NULL && index < pos - 1) {
+        temp = temp->next;
+        index++;
+    }
+
+    if (temp == NULL) {
+        printf("Position not found.\n");
+        return;
+    }
+
+    newnode->next = temp->next;
+    newnode->prev = temp;
+
+    if (temp->next != NULL) {
+        temp->next->prev = newnode;
+    }
+
+    temp->next = newnode;
+}
+
+void display() {
+    Node* temp = first;
+    while (temp != NULL) {
+        printf("%d <-> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    insertatpos(10, 1);
+    insertatpos(20, 2);
+    insertatpos(15, 2);
+    insertatpos(20,10);
+    insertatpos(100, 1);
+    display();
+    return 0;
+}
