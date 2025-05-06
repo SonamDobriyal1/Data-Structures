@@ -1,0 +1,97 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node* next;
+    struct node* prev;
+};
+
+typedef struct node * Node;
+
+Node first=NULL;
+
+//create node
+Node createnode(int data){
+    Node temp=(Node *)malloc(sizeof(struct node));
+    temp->data=data;
+    temp->next=NULL;
+    temp->prev=NULL;
+    return temp;
+
+}
+
+//insert node at a given position
+void insertnode(int pos,int data){
+    Node newnode=createnode(data);
+    if(pos<=0){
+        printf("Invalid Position\n");
+    }
+    if(pos==1){
+            newnode->next=first;
+            if(first!=NULL){
+                first->prev=newnode;
+            }
+            first=newnode;
+            return;
+
+    }
+    Node temp=first;
+    int index=1;
+    while(temp!=NULL && index<pos-1){
+        temp=temp->next;
+        index++;
+    }
+    if(temp==NULL){
+        printf("Invalid Position\n");
+        return;
+    }
+    newnode->next=temp->next;
+    newnode->prev=temp;
+    if(temp->next!=NULL){
+        temp->next->prev=newnode;
+    }temp->next=newnode;
+}
+
+//to display DLL
+void display(){
+Node temp;
+temp=first;
+while(temp!=NULL){
+        printf("%d  -- ",temp->data);
+    temp=temp->next;
+}printf("\n");
+}
+
+//Delete a node at end
+void deleteatend(){
+    if(first==NULL){
+        printf("Empty DLL");
+        return;
+    }
+    Node temp=first;
+    while(temp->next!=NULL){
+        temp=temp->next;
+    }
+    if(temp->prev==NULL){
+        free(temp);
+        first=NULL;
+    }else{
+        temp->prev->next=NULL;
+        free(temp);
+    }
+
+
+}
+
+void main()
+{
+insertnode(1,10);
+insertnode(2,100);
+insertnode(1,20);
+display();
+deleteatend();
+display();
+
+
+}
