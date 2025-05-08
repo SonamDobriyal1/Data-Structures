@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+    int data;
+    struct node *next;
+};
+
+typedef struct node *Node;
+Node first=NULL;
+
+
+
+ Node createnode(){
+     Node temp;
+     temp=(Node)malloc(sizeof(struct node));
+     temp->next=NULL;
+     return temp;
+ }
+
+
+Node addnode(Node first,int x){
+    Node temp, lastnode=first;
+    temp=createnode();
+    temp->data=x;
+    if(first==NULL){
+        first=temp;
+    }
+    else{
+        while(lastnode->next!=NULL){
+            lastnode=lastnode->next;
+        }
+        lastnode->next=temp;
+    }
+    return first;
+
+
+}
+void display(Node first){
+    Node lastnode=first;
+    while (lastnode!=NULL){
+        printf("%d->",lastnode->data);
+        lastnode=lastnode->next;
+    }printf("NULL\n");
+}
+
+void counting(Node first){
+    int count=0;
+    Node temp=first;
+    while (temp!=NULL){
+        count+=1;
+        temp=temp->next;
+    }printf("Count of elements is %d",count);
+}
+Node insertion(Node first,int x){
+    Node temp;
+    temp=createnode();
+    temp->data=x;
+    temp->next=first;
+    first=temp;
+    return first;
+
+}
+
+Node insertend(Node first, int x){
+    Node last=first;
+    Node temp;
+    temp=createnode();
+    if (first==NULL){
+        first=temp;
+    }
+    else{
+    while(last->next!=NULL){
+            last=last->next;
+    }
+    temp->data=x;
+    last->next=temp;
+    }
+}
+
+
+void main(){
+
+    int x;
+    int n;
+    printf("enter number");
+    scanf("%d",&n);
+    while(scanf("%d",&x) && x!=-1){
+            first=addnode(first,x);
+    }
+    //for(int i=0;i<n;i++){
+        //scanf("%d",&x);
+      //  first=addnode(first,x);
+    //}
+    int newfirst;
+    printf("enter element to be inserted");
+    scanf("%d",&x);
+    first=insertion(first,x);
+    scanf("%d",&x);
+    insertend(first,x);
+    display(first);
+    counting(first);
+
+
+}
